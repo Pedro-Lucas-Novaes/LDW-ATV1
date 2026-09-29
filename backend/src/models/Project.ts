@@ -1,17 +1,17 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../config/database';
 
-export class User extends Model {
+export class Project extends Model {
   declare id: number;
   declare nome: string;
-  declare email: string;
-  declare senha_hash: string;
+  declare descricao: string | null;
+  declare user_id: number;
 
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
 
-User.init(
+Project.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -24,20 +24,20 @@ User.init(
       allowNull: false,
     },
 
-    email: {
-      type: DataTypes.STRING(150),
-      allowNull: false,
-      unique: true,
+    descricao: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
 
-    senha_hash: {
-      type: DataTypes.STRING(255),
+    user_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
+
   {
     sequelize,
-    tableName: 'users',
+    tableName: 'projects',
     timestamps: true,
   },
 );

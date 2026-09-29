@@ -9,9 +9,9 @@ POST http://localhost:3000/api/users
 Content-Type: application/json
 
 {
-    "nome": "Mariana Souza",
-    "email": "mariana.souza@email.com",
-    "password": "12345678"
+    "nome": "Pedro",
+    "email": "pedro@email.com",
+    "password": "123456"
 }
 
 ### Buscar Usuario por ID
@@ -22,8 +22,8 @@ PUT http://localhost:3000/api/users/1
 Content-Type: application/json
 
 {
-  "nome": "Mariana Souza Silva",
-  "email": "mariana.silva@email.com"
+  "nome": "Pedro Lucas",
+  "email": "pedro@email.com"
 }
 
 ### Excluir Usuario
