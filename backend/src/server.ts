@@ -34,7 +34,7 @@ app.use('/api', appRoutes);
 async function main() {
   try {
     await sequelize.authenticate();
-    console.log('Conexão com o PostgreSQL no Supabase realizada com sucesso.');
+    console.log('Conexão com o PostgreSQL realizada com sucesso.');
 
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);
