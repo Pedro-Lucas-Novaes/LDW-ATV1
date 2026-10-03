@@ -1,2 +1,24 @@
-node_modules
-.pnpm-store
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Variaveis de ambiente
+.env
+.env.*
+!.env.example
+
+# Build
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
