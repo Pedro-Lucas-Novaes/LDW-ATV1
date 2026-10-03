@@ -7,10 +7,10 @@ const router = Router();
 
 router.use(authMiddleware);
 
-router.get('/', ProjectController.index);
-router.get('/:id', ProjectController.show);
-router.post('/', ProjectController.create);
-router.put('/:id', ProjectController.update);
-router.delete('/:id', ProjectController.delete);
+router.get('/', authMiddleware, ProjectController.index);
+router.get('/:id', authMiddleware, ProjectController.show);
+router.post('/', authMiddleware, ProjectController.create);
+router.put('/:id', authMiddleware, ProjectController.update);
+router.delete('/:id', authMiddleware, ProjectController.delete);
 
 export { router as projectRoutes };

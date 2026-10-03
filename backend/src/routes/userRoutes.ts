@@ -1,13 +1,16 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/UserController';
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 const router = Router();
 
-// Mapeamento dos verbos HTTP
-router.get('/', UserController.index);
-router.get('/:id', UserController.show);
+
 router.post('/', UserController.create);
-router.put('/:id', UserController.update);
-router.delete('/:id', UserController.delete);
+
+
+router.get('/', authMiddleware, UserController.index);
+router.get('/:id', authMiddleware, UserController.show);
+router.put('/:id', authMiddleware, UserController.update);
+router.delete('/:id', authMiddleware, UserController.delete);
 
 export { router as userRoutes };
