@@ -5,7 +5,7 @@ import swaggerUI from 'swagger-ui-express';
 import swaggerDocument from './docs/swagger.json';
 import { sequelize } from './config/database';
 import { appRoutes } from './routes';
-import './models';
+import './models/associations';
 
 dotenv.config();
 

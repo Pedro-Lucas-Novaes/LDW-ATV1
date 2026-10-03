@@ -1,16 +1,18 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../config/database';
 
-export class Project extends Model {
+export class Task extends Model {
   declare id: number;
-  declare nome: string;
+  declare titulo: string;
   declare descricao: string | null;
-  declare user_id: number;
+  declare status: string;
+  declare prioridade: string;
+  declare project_id: number;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
 
-Project.init(
+Task.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -18,8 +20,8 @@ Project.init(
       primaryKey: true,
     },
 
-    nome: {
-      type: DataTypes.STRING(100),
+    titulo: {
+      type: DataTypes.STRING(150),
       allowNull: false,
     },
 
@@ -28,14 +30,26 @@ Project.init(
       allowNull: true,
     },
 
-    user_id: {
+    status: {
+      type: DataTypes.STRING(30),
+      allowNull: false,
+      defaultValue: 'pendente',
+    },
+
+    prioridade: {
+      type: DataTypes.STRING(30),
+      allowNull: false,
+      defaultValue: 'media',
+    },
+
+    project_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
   },
   {
     sequelize,
-    tableName: 'projects',
+    tableName: 'tasks',
     timestamps: true,
   },
 );

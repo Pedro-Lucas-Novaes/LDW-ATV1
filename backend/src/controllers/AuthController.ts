@@ -39,8 +39,14 @@ export class AuthController {
         mensagem: 'Login realizado com sucesso!',
         token,
       });
-    } catch (error: any) {
-      return res.status(500).json({ erro: error.message });
+    } catch (error) {
+      const detalhe =
+        error instanceof Error ? error.message : 'Erro desconhecido';
+
+      return res.status(500).json({
+        erro: 'Erro ao realizar login',
+        detalhe,
+      });
     }
   }
 }

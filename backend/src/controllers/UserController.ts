@@ -10,10 +10,14 @@ export class UserController {
         attributes: ['id', 'nome', 'email', 'createdAt', 'updatedAt'],
       });
       return res.status(200).json(users);
-    } catch (error: any) {
-      return res
-        .status(500)
-        .json({ erro: 'Erro ao listar usuários', detalhe: error.message });
+    } catch (error) {
+      const detalhe =
+        error instanceof Error ? error.message : 'Erro desconhecido';
+
+      return res.status(500).json({
+        erro: 'Erro ao listar os usuarios',
+        detalhe,
+      });
     }
   }
 
@@ -36,10 +40,14 @@ export class UserController {
       }
 
       return res.status(200).json(user);
-    } catch (error: any) {
-      return res
-        .status(500)
-        .json({ erro: 'Erro ao buscar usuário', detalhe: error.message });
+    } catch (error) {
+      const detalhe =
+        error instanceof Error ? error.message : 'Erro desconhecido';
+
+      return res.status(500).json({
+        erro: 'Erro ao buscar usuario',
+        detalhe,
+      });
     }
   }
 
@@ -86,10 +94,14 @@ export class UserController {
         email: novoUser.email,
         createdAt: novoUser.createdAt,
       });
-    } catch (error: any) {
-      return res
-        .status(500)
-        .json({ erro: 'Erro ao cadastrar usuário', detalhe: error.message });
+    } catch (error) {
+      const detalhe =
+        error instanceof Error ? error.message : 'Erro desconhecido';
+
+      return res.status(500).json({
+        erro: 'Erro ao cadastrar usuario',
+        detalhe,
+      });
     }
   }
 
@@ -144,10 +156,14 @@ export class UserController {
         email: user.email,
         createdAt: user.createdAt,
       });
-    } catch (error: any) {
-      return res
-        .status(500)
-        .json({ erro: 'Erro ao atualizar usuário', detalhe: error.message });
+    } catch (error) {
+      const detalhe =
+        error instanceof Error ? error.message : 'Erro desconhecido';
+
+      return res.status(500).json({
+        erro: 'Erro ao atualizar o usuario',
+        detalhe,
+      });
     }
   }
 
@@ -171,10 +187,14 @@ export class UserController {
 
       // 204 No Content
       return res.status(204).send();
-    } catch (error: any) {
-      return res
-        .status(500)
-        .json({ erro: 'Erro ao excluir usuário', detalhe: error.message });
+    } catch (error) {
+      const detalhe =
+        error instanceof Error ? error.message : 'Erro desconhecido';
+
+      return res.status(500).json({
+        erro: 'Erro ao excluir usuario',
+        detalhe,
+      });
     }
   }
 }

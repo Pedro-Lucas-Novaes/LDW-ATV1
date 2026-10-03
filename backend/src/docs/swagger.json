@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "LDW Backend API",
+    "title": "LDW Backend API - Task Tracker",
     "version": "1.0.0",
-    "description": "Documentacao interativa da API REST para integracao com o Front-end React"
+    "description": "Documentacao interativa da API REST do Task Tracker para integracao com o Front-end React"
   },
   "servers": [
     {
@@ -11,7 +11,53 @@
       "description": "Servidor Local de Desenvolvimento"
     }
   ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Autenticacao de usuarios"
+    },
+    {
+      "name": "Users",
+      "description": "Gerenciamento de usuarios"
+    },
+    {
+      "name": "Projects",
+      "description": "Gerenciamento de projetos"
+    },
+    {
+      "name": "Tasks",
+      "description": "Gerenciamento de tarefas"
+    }
+  ],
   "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Realizar login",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso"
+          },
+          "400": {
+            "description": "Email e senha sao obrigatorios"
+          },
+          "401": {
+            "description": "Credenciais invalidas"
+          }
+        }
+      }
+    },
+
     "/users": {
       "get": {
         "summary": "Listar todos os usuarios",
@@ -36,12 +82,19 @@
           }
         },
         "responses": {
-          "201": { "description": "Usuario criado com sucesso" },
-          "400": { "description": "Dados invalidos ou campos ausentes" },
-          "409": { "description": "E-mail ja cadastrado no sistema" }
+          "201": {
+            "description": "Usuario criado com sucesso"
+          },
+          "400": {
+            "description": "Dados invalidos ou campos ausentes"
+          },
+          "409": {
+            "description": "E-mail ja cadastrado no sistema"
+          }
         }
       }
     },
+
     "/users/{id}": {
       "get": {
         "summary": "Buscar usuario por ID",
@@ -51,12 +104,18 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer" }
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
-          "200": { "description": "Usuario encontrado" },
-          "404": { "description": "Usuario nao encontrado" }
+          "200": {
+            "description": "Usuario encontrado"
+          },
+          "404": {
+            "description": "Usuario nao encontrado"
+          }
         }
       },
       "put": {
@@ -67,7 +126,9 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer" }
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "requestBody": {
@@ -81,8 +142,12 @@
           }
         },
         "responses": {
-          "200": { "description": "Usuario atualizado com sucesso" },
-          "404": { "description": "Usuario nao encontrado" }
+          "200": {
+            "description": "Usuario atualizado com sucesso"
+          },
+          "404": {
+            "description": "Usuario nao encontrado"
+          }
         }
       },
       "delete": {
@@ -93,44 +158,585 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer" }
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
-          "204": { "description": "Usuario removido com sucesso" },
-          "404": { "description": "Usuario nao encontrado" }
+          "204": {
+            "description": "Usuario removido com sucesso"
+          },
+          "404": {
+            "description": "Usuario nao encontrado"
+          }
+        }
+      }
+    },
+
+    "/projects": {
+      "get": {
+        "summary": "Listar projetos do usuario autenticado",
+        "tags": ["Projects"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projetos retornados com sucesso"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar novo projeto",
+        "tags": ["Projects"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProjectDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Projeto criado com sucesso"
+          },
+          "400": {
+            "description": "Dados invalidos"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          }
+        }
+      }
+    },
+
+    "/projects/{id}": {
+      "get": {
+        "summary": "Buscar projeto por ID",
+        "tags": ["Projects"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Projeto encontrado"
+          },
+          "400": {
+            "description": "ID invalido"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          },
+          "404": {
+            "description": "Projeto nao encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar projeto",
+        "tags": ["Projects"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProjectDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Projeto atualizado com sucesso"
+          },
+          "400": {
+            "description": "Dados invalidos"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          },
+          "404": {
+            "description": "Projeto nao encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir projeto",
+        "tags": ["Projects"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Projeto excluido com sucesso"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          },
+          "404": {
+            "description": "Projeto nao encontrado"
+          }
+        }
+      }
+    },
+
+    "/tasks": {
+      "get": {
+        "summary": "Listar tarefas dos projetos do usuario autenticado",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefas retornadas com sucesso"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar nova tarefa",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tarefa criada com sucesso"
+          },
+          "400": {
+            "description": "Dados invalidos"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          },
+          "404": {
+            "description": "Projeto nao encontrado"
+          }
+        }
+      }
+    },
+
+    "/tasks/{id}": {
+      "get": {
+        "summary": "Buscar tarefa por ID",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefa encontrada"
+          },
+          "400": {
+            "description": "ID invalido"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          },
+          "404": {
+            "description": "Tarefa nao encontrada"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar tarefa",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTaskDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tarefa atualizada com sucesso"
+          },
+          "400": {
+            "description": "Dados invalidos"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          },
+          "404": {
+            "description": "Tarefa nao encontrada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Excluir tarefa",
+        "tags": ["Tasks"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Tarefa excluida com sucesso"
+          },
+          "401": {
+            "description": "Usuario nao autenticado"
+          },
+          "404": {
+            "description": "Tarefa nao encontrada"
+          }
         }
       }
     }
   },
+
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+
     "schemas": {
       "User": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "example": 1 },
-          "nome": { "type": "string", "example": "Ana Silva" },
-          "email": { "type": "string", "example": "ana.silva@email.com" },
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "nome": {
+            "type": "string",
+            "example": "Ana Silva"
+          },
+          "email": {
+            "type": "string",
+            "example": "ana.silva@email.com"
+          },
           "createdAt": {
             "type": "string",
+            "format": "date-time",
             "example": "2026-09-13T10:00:00.000Z"
           }
         }
       },
+
       "CreateUserDTO": {
         "type": "object",
         "required": ["nome", "email", "password"],
         "properties": {
-          "nome": { "type": "string", "example": "Ana Silva" },
-          "email": { "type": "string", "example": "ana.silva@email.com" },
-          "password": { "type": "string", "example": "123456" }
+          "nome": {
+            "type": "string",
+            "example": "Ana Silva"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "ana.silva@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          }
         }
       },
+
       "UpdateUserDTO": {
         "type": "object",
         "properties": {
-          "nome": { "type": "string", "example": "Ana Silva Atualizada" },
-          "email": { "type": "string", "example": "ana.novo@email.com" }
+          "nome": {
+            "type": "string",
+            "example": "Ana Silva Atualizada"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "ana.novo@email.com"
+          }
+        }
+      },
+
+      "LoginDTO": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "ana.silva@email.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "123456"
+          }
+        }
+      },
+
+      "Project": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "nome": {
+            "type": "string",
+            "example": "Projeto Faculdade"
+          },
+          "descricao": {
+            "type": "string",
+            "nullable": true,
+            "example": "Organizacao das atividades da faculdade"
+          },
+          "user_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+
+      "CreateProjectDTO": {
+        "type": "object",
+        "required": ["nome"],
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Projeto Faculdade"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Organizacao das atividades da faculdade"
+          }
+        }
+      },
+
+      "UpdateProjectDTO": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string",
+            "example": "Projeto Faculdade Atualizado"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Nova descricao do projeto"
+          }
+        }
+      },
+
+      "Task": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "titulo": {
+            "type": "string",
+            "example": "Finalizar atividade de LDW"
+          },
+          "descricao": {
+            "type": "string",
+            "nullable": true,
+            "example": "Finalizar API do Task Tracker"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pendente", "em_andamento", "concluida"],
+            "example": "pendente"
+          },
+          "prioridade": {
+            "type": "string",
+            "enum": ["baixa", "media", "alta"],
+            "example": "alta"
+          },
+          "project_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+
+      "CreateTaskDTO": {
+        "type": "object",
+        "required": ["titulo", "project_id"],
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "example": "Finalizar atividade de LDW"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Finalizar API do Task Tracker"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pendente", "em_andamento", "concluida"],
+            "default": "pendente",
+            "example": "pendente"
+          },
+          "prioridade": {
+            "type": "string",
+            "enum": ["baixa", "media", "alta"],
+            "default": "media",
+            "example": "alta"
+          },
+          "project_id": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      },
+
+      "UpdateTaskDTO": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "example": "Finalizar atividade de LDW"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "API finalizada e testada"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pendente", "em_andamento", "concluida"],
+            "example": "concluida"
+          },
+          "prioridade": {
+            "type": "string",
+            "enum": ["baixa", "media", "alta"],
+            "example": "alta"
+          },
+          "project_id": {
+            "type": "integer",
+            "example": 1
+          }
         }
       }
     }
