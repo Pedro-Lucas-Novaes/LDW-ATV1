@@ -4,10 +4,7 @@ import { Project } from '../models/Project';
 
 export class TaskController {
   // GET /api/tasks
-  public static async index(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  public static async index(req: Request, res: Response): Promise<Response> {
     try {
       const userId = req.user?.id;
 
@@ -43,10 +40,7 @@ export class TaskController {
   }
 
   // GET /api/tasks/:id
-  public static async show(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  public static async show(req: Request, res: Response): Promise<Response> {
     try {
       const id = parseInt(req.params.id as string, 10);
 
@@ -98,10 +92,7 @@ export class TaskController {
   }
 
   // POST /api/tasks
-  public static async create(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  public static async create(req: Request, res: Response): Promise<Response> {
     try {
       const userId = req.user?.id;
 
@@ -111,19 +102,9 @@ export class TaskController {
         });
       }
 
-      const {
-        titulo,
-        descricao,
-        status,
-        prioridade,
-        project_id,
-      } = req.body;
+      const { titulo, descricao, status, prioridade, project_id } = req.body;
 
-      if (
-        !titulo ||
-        typeof titulo !== 'string' ||
-        titulo.trim() === ''
-      ) {
+      if (!titulo || typeof titulo !== 'string' || titulo.trim() === '') {
         return res.status(400).json({
           erro: 'O campo titulo é obrigatório.',
         });
@@ -151,17 +132,9 @@ export class TaskController {
         });
       }
 
-      const statusPermitidos = [
-        'pendente',
-        'em_andamento',
-        'concluida',
-      ];
+      const statusPermitidos = ['pendente', 'em_andamento', 'concluida'];
 
-      const prioridadePermitida = [
-        'baixa',
-        'media',
-        'alta',
-      ];
+      const prioridadePermitida = ['baixa', 'media', 'alta'];
 
       const statusFinal = status ?? 'pendente';
       const prioridadeFinal = prioridade ?? 'media';
@@ -211,10 +184,7 @@ export class TaskController {
   }
 
   // PUT /api/tasks/:id
-  public static async update(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  public static async update(req: Request, res: Response): Promise<Response> {
     try {
       const id = parseInt(req.params.id as string, 10);
 
@@ -253,19 +223,10 @@ export class TaskController {
         });
       }
 
-      const {
-        titulo,
-        descricao,
-        status,
-        prioridade,
-        project_id,
-      } = req.body;
+      const { titulo, descricao, status, prioridade, project_id } = req.body;
 
       if (titulo !== undefined) {
-        if (
-          typeof titulo !== 'string' ||
-          titulo.trim() === ''
-        ) {
+        if (typeof titulo !== 'string' || titulo.trim() === '') {
           return res.status(400).json({
             erro: 'O campo titulo deve ser um texto valido.',
           });
@@ -275,10 +236,7 @@ export class TaskController {
       }
 
       if (descricao !== undefined) {
-        if (
-          descricao !== null &&
-          typeof descricao !== 'string'
-        ) {
+        if (descricao !== null && typeof descricao !== 'string') {
           return res.status(400).json({
             erro: 'O campo descricao deve ser um texto valido.',
           });
@@ -288,11 +246,7 @@ export class TaskController {
       }
 
       if (status !== undefined) {
-        const statusPermitidos = [
-          'pendente',
-          'em_andamento',
-          'concluida',
-        ];
+        const statusPermitidos = ['pendente', 'em_andamento', 'concluida'];
 
         if (!statusPermitidos.includes(status)) {
           return res.status(400).json({
@@ -305,11 +259,7 @@ export class TaskController {
       }
 
       if (prioridade !== undefined) {
-        const prioridadePermitida = [
-          'baixa',
-          'media',
-          'alta',
-        ];
+        const prioridadePermitida = ['baixa', 'media', 'alta'];
 
         if (!prioridadePermitida.includes(prioridade)) {
           return res.status(400).json({
@@ -361,10 +311,7 @@ export class TaskController {
   }
 
   // DELETE /api/tasks/:id
-  public static async delete(
-    req: Request,
-    res: Response,
-  ): Promise<Response> {
+  public static async delete(req: Request, res: Response): Promise<Response> {
     try {
       const id = parseInt(req.params.id as string, 10);
 
