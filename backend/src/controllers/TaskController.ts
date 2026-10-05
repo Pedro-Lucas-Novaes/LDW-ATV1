@@ -10,7 +10,7 @@ export class TaskController {
 
       if (!userId) {
         return res.status(401).json({
-          erro: 'Usuário não autenticado.',
+          erro: 'Usuário não autenticado..',
         });
       }
 
